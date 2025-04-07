@@ -2,6 +2,51 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
 
+// 处理预检请求(OPTIONS)
+export async function OPTIONS(request: NextRequest) {
+  // 获取请求来源
+  const origin = request.headers.get("origin") || "*";
+
+  // 获取请求头中的 Access-Control-Request-Headers
+  const requestHeaders =
+    request.headers.get("access-control-request-headers") || "";
+
+  // 返回支持CORS的响应
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers":
+        requestHeaders || "Content-Type, Authorization",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Max-Age": "86400", // 24小时
+    },
+  });
+}
+
+// 设置CORS头部的辅助函数
+function setCorsHeaders(response: NextResponse, request: NextRequest) {
+  const origin = request.headers.get("origin") || "*";
+
+  response.headers.set("Access-Control-Allow-Origin", origin);
+  response.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+  response.headers.set("Access-Control-Allow-Credentials", "true");
+
+  if (origin !== "*") {
+    response.headers.set("Vary", "Origin");
+  }
+
+  return response;
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ url: string[] }> }
@@ -47,10 +92,11 @@ export async function GET(
     });
 
     if (!response.ok) {
-      return NextResponse.json(
+      const errorResponse = NextResponse.json(
         { error: `Failed to fetch: ${response.status} ${response.statusText}` },
         { status: response.status }
       );
+      return setCorsHeaders(errorResponse, request);
     }
 
     // 获取原始响应的内容类型
@@ -61,18 +107,20 @@ export async function GET(
     const data = await response.arrayBuffer();
 
     // 创建一个新的响应
-    return new NextResponse(data, {
+    const nextResponse = new NextResponse(data, {
       headers: {
         "content-type": contentType,
         "cache-control": "public, max-age=86400",
-        "access-control-allow-origin": "*",
       },
     });
+
+    return setCorsHeaders(nextResponse, request);
   } catch (error) {
     console.error("Proxy error:", error);
-    return NextResponse.json(
+    const errorResponse = NextResponse.json(
       { error: `Error proxying request: ${(error as any).message}` },
       { status: 500 }
     );
+    return setCorsHeaders(errorResponse, request);
   }
 }
