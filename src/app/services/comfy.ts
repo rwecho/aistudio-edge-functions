@@ -2,13 +2,16 @@ import { v4 as uuid } from "uuid";
 
 import "server-only";
 
-const comfyuiUrl = process.env.COMFYUI_URL;
-
-if (!comfyuiUrl) {
-  throw new Error("COMFYUI_URL is not set");
-}
+const getComfyuiUrl = () => {
+  const comfyuiUrl = process.env.COMFYUI_URL;
+  if (!comfyuiUrl) {
+    throw new Error("COMFYUI_URL is not set");
+  }
+  return comfyuiUrl;
+};
 
 const openWebSocket = () => {
+  const comfyuiUrl = getComfyuiUrl();
   const clientId = uuid().replace(/-/g, "");
   const wsUrl = new URL(`ws?clientId=${clientId}`, comfyuiUrl);
   console.log("WebSocket URL:", wsUrl.toString());
@@ -18,6 +21,7 @@ const openWebSocket = () => {
 };
 
 const queuePrompt = async (clientId: string, workflow: Record<string, any>) => {
+  const comfyuiUrl = getComfyuiUrl();
   console.log("queuePrompt url:", `${comfyuiUrl}/prompt`);
   console.log("queuePrompt clientId:", clientId);
   const response = await fetch(`${comfyuiUrl}/prompt`, {
@@ -127,15 +131,13 @@ const trackProgress = async (
 };
 
 const getHistory = async (promptId: string) => {
-  const response = await fetch(
-    `${process.env.COMFYUI_URL}/history?prompt_id=${promptId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const comfyuiUrl = getComfyuiUrl();
+  const response = await fetch(`${comfyuiUrl}/history?prompt_id=${promptId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch history");
@@ -145,8 +147,9 @@ const getHistory = async (promptId: string) => {
 };
 
 const getImage = async (filename: string, subfolder: string, type: string) => {
+  const comfyuiUrl = getComfyuiUrl();
   const response = await fetch(
-    `${process.env.COMFYUI_URL}/view?filename=${filename}&subfolder=${subfolder}&type=${type}`,
+    `${comfyuiUrl}/view?filename=${filename}&subfolder=${subfolder}&type=${type}`,
     {
       method: "GET",
       headers: {
@@ -163,9 +166,6 @@ const getImage = async (filename: string, subfolder: string, type: string) => {
 };
 
 export const generateImageByPrompt = async (workflow: Record<string, any>) => {
-  if (!comfyuiUrl) {
-    throw new Error("COMFYUI_URL is not set");
-  }
   const { ws, clientId } = openWebSocket();
   const promptId = await queuePrompt(clientId, workflow);
   await trackProgress(ws, promptId, workflow);
