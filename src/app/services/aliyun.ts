@@ -46,7 +46,10 @@ export async function uploadToAliyun(fileBuffer: Buffer, filePath: string) {
 }
 
 // 获取文件url
-export async function getAliyunFileUrl(filePath: string): Promise<string> {
+export async function getAliyunFileUrl(
+  filePath: string,
+  expiresIn: number = 60 * 60
+): Promise<string> {
   try {
     const client = createOSSClient();
     // 生成签名URL
@@ -57,7 +60,7 @@ export async function getAliyunFileUrl(filePath: string): Promise<string> {
         Key: filePath,
       }),
       {
-        expiresIn: 60 * 60, // 1小时有效期
+        expiresIn, // 默认1小时有效期，可根据参数修改
       }
     );
 
