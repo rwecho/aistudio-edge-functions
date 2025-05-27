@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import flux from "./flux.json";
+import nunchakuFlux from "./nunchaku-flux.json";
 import { generateImageByPrompt } from "@/app/services/comfy";
 import { randomInt } from "crypto";
 import { uploadToAliyun } from "@/app/services/aliyun";
@@ -11,8 +11,10 @@ export async function GET(request: NextRequest) {
   const width = searchParams.get("width") || "1024";
   const height = searchParams.get("height") || "1024";
   const seed = searchParams.get("seed") || randomInt(0, 1000000).toString();
-  const steps = searchParams.get("steps") || "20";
+  const steps = searchParams.get("steps") || "8";
   const prompt = searchParams.get("prompt");
+  const lora = searchParams.get("lora");
+  const lora_strength = searchParams.get("lora_strength");
 
   if (!prompt) {
     return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
@@ -24,14 +26,21 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  flux["6"]["inputs"]["text"] = prompt;
-  flux["27"]["inputs"]["width"] = parseInt(width);
-  flux["27"]["inputs"]["height"] = parseInt(height);
-  flux["27"]["inputs"]["batch_size"] = parseInt(batch_size);
-  flux["31"]["inputs"]["seed"] = parseInt(seed);
-  flux["31"]["inputs"]["steps"] = parseInt(steps);
+  nunchakuFlux["100"]["inputs"]["text"] = prompt;
+  nunchakuFlux["92"]["inputs"]["width"] = parseInt(width);
+  nunchakuFlux["92"]["inputs"]["height"] = parseInt(height);
+  nunchakuFlux["92"]["inputs"]["batch_size"] = parseInt(batch_size);
+  nunchakuFlux["99"]["inputs"]["noise_seed"] = parseInt(seed);
+  nunchakuFlux["97"]["inputs"]["steps"] = parseInt(steps);
 
-  const imageBuffers = await generateImageByPrompt(flux);
+  if (lora) {
+    nunchakuFlux["90"]["inputs"]["lora_name"] = lora;
+  }
+  if (lora_strength) {
+    nunchakuFlux["90"]["inputs"]["lora_strength"] = parseFloat(lora_strength);
+  }
+
+  const imageBuffers = await generateImageByPrompt(nunchakuFlux);
   if (!imageBuffers || imageBuffers.length === 0) {
     return NextResponse.json({ error: "No images generated" }, { status: 500 });
   }
