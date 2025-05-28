@@ -1,5 +1,13 @@
 [
   {
+    "name": "Studio_Ghibli_Flux.safetensors",
+    "title": "Studio Ghibli Flux",
+    "trigger_keywords": ["ghiblistyle"],
+    "thumbnail": "/loras/thumbnails/Studio_Ghibli_Flux.webp",
+    "description": "A Lora model that captures the enchanting and whimsical style of Studio Ghibli films, perfect for creating magical and nostalgic imagery."
+  },
+
+  {
     "name": "30s_Technicolor_Movie.safetensors",
     "title": "30s Technicolor Movie",
     "trigger_keywords": [
