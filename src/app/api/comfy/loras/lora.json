@@ -1,12 +1,5 @@
 [
   {
-    "name": "Ghibli_v6.safetensors",
-    "title": "Ghibli Style",
-    "trigger_keywords": ["ghiblistyle"],
-    "thumbnail": "/loras/thumbnails/Ghibli_v6.jpeg",
-    "description": "A Lora model inspired by the art style of Studio Ghibli, version 6."
-  },
-  {
     "name": "30s_Technicolor_Movie.safetensors",
     "title": "30s Technicolor Movie",
     "trigger_keywords": [
