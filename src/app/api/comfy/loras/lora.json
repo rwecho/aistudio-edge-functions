@@ -1,12 +1,14 @@
 [
   {
     "name": "Ghibli_v6.safetensors",
+    "title": "Ghibli Style",
     "trigger_keywords": ["ghiblistyle"],
     "thumbnail": "/loras/thumbnails/Ghibli_v6.jpeg",
     "description": "A Lora model inspired by the art style of Studio Ghibli, version 6."
   },
   {
     "name": "30s_Technicolor_Movie.safetensors",
+    "title": "30s Technicolor Movie",
     "trigger_keywords": [
       "ArsMovieStill, movie still from a 1930s technicolor movie"
     ],
@@ -15,6 +17,7 @@
   },
   {
     "name": "60s_Psychedelic_Movie.safetensors",
+    "title": "60s Psychedelic Movie",
     "trigger_keywords": [
       "ArsMovieStill, movie still from a 60s psychedelic movie"
     ],
@@ -23,24 +26,28 @@
   },
   {
     "name": "80s_Fantasy_Movie.safetensors",
+    "title": "80s Fantasy Movie",
     "trigger_keywords": ["80s Fantasy Movie Still"],
     "thumbnail": "/loras/thumbnails/80s_Fantasy_Movie.png",
     "description": "A Lora model that captures the magical and adventurous spirit of 1980s fantasy movies, ideal for generating nostalgic fantasy imagery."
   },
   {
     "name": "aidmaMJ6.1-FLUX-v0.4.safetensors",
+    "title": "Aidma MJ6.1 FLUX v0.4",
     "trigger_keywords": ["aidmamj6.1"],
     "thumbnail": "/loras/thumbnails/aidmaMJ6.1-FLUX-v0.4.png",
     "description": "A Lora model designed for generating images with a specific aesthetic, version 0.4."
   },
   {
     "name": "ArcaneFGTNR.safetensors",
+    "title": "Arcane FGTNR",
     "trigger_keywords": ["ArcaneFGTNR"],
     "thumbnail": "/loras/thumbnails/ArcaneFGTNR.webp",
     "description": "A Lora model inspired by the visual style of the animated series Arcane, designed to create images with a similar aesthetic."
   },
   {
     "name": "PASTEL (FLUX).safetensors",
+    "title": "Pastel Flux",
     "trigger_keywords": ["Pastel", "drawing with dry chalk", "crayons"],
     "thumbnail": "/loras/thumbnails/PASTEL_FLUX.webp",
     "description": "A Lora model that focuses on pastel color palettes, ideal for creating soft and dreamy images."
