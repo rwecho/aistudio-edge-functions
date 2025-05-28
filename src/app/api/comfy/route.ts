@@ -3,6 +3,7 @@ import nunchakuFlux from "./nunchaku-flux.json";
 import { generateImageByPrompt } from "@/app/services/comfy";
 import { randomInt } from "crypto";
 import { uploadToAliyun } from "@/app/services/aliyun";
+import loras from "../comfy/loras/lora.json";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -35,6 +36,11 @@ export async function GET(request: NextRequest) {
 
   if (lora) {
     nunchakuFlux["90"]["inputs"]["lora_name"] = lora;
+    const loraData = loras.find((item) => item.name === lora);
+    if (loraData) {
+      const triggerWords = (loraData.trigger_keywords || []).join(", ");
+      nunchakuFlux["100"]["inputs"]["text"] = `${triggerWords} ${prompt}`;
+    }
   }
   if (lora_strength) {
     nunchakuFlux["90"]["inputs"]["lora_strength"] = parseFloat(lora_strength);
