@@ -1,5 +1,20 @@
 [
   {
+    "name": "In-Context-LoRA/couple-profile.safetensors",
+    "title": "Couple Profile",
+    "trigger_keywords": [],
+    "demo_prompt": "This two-part image portrays a couple of cartoon cats in detective attire; [LEFT] a black cat in a trench coat and fedora holds a magnifying glass and peers to the right, while [RIGHT] a white cat with a bow tie and matching hat raises an eyebrow in curiosity, creating a fun, noir-inspired scene against a dimly lit background.",
+    "thumbnail": "/loras/thumbnails/couple-profile.webp",
+    "description": "A Lora model designed to generate images of a couple of cartoon cats in detective attire, capturing a noir-inspired scene."
+  },
+  {
+    "name": "Disney_Style.safetensors",
+    "title": "Disney Style",
+    "trigger_keywords": ["DisneyRenstyle"],
+    "thumbnail": "/loras/thumbnails/Disney_Style.webp",
+    "description": "A Lora model that captures the whimsical and enchanting style of classic Disney animations, perfect for creating magical and nostalgic imagery."
+  },
+  {
     "name": "Studio_Ghibli_Flux.safetensors",
     "title": "Studio Ghibli Flux",
     "trigger_keywords": ["ghiblistyle"],
@@ -15,15 +30,6 @@
     ],
     "thumbnail": "/loras/thumbnails/30s_Technicolor_Movie.jpeg",
     "description": "A Lora model that captures the essence of 1930s technicolor movies, ideal for creating vintage-style images."
-  },
-  {
-    "name": "60s_Psychedelic_Movie.safetensors",
-    "title": "60s Psychedelic Movie",
-    "trigger_keywords": [
-      "ArsMovieStill, movie still from a 60s psychedelic movie"
-    ],
-    "thumbnail": "/loras/thumbnails/60s_Psychedelic_Movie.webp",
-    "description": "A Lora model that embodies the vibrant and surreal aesthetics of 1960s psychedelic movies, perfect for creating trippy visuals."
   },
   {
     "name": "80s_Fantasy_Movie.safetensors",
