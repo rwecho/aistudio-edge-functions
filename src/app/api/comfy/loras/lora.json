@@ -11,6 +11,7 @@
     "name": "Disney_Style.safetensors",
     "title": "Disney Style",
     "trigger_keywords": ["DisneyRenstyle"],
+    "demo_prompt": "masterpiece, best quality, amazing quality, absurdres, DisneyRenstyle, BBelle, Belle Disney, BAB, 1girl, red hood, brown hair, brown eyes, fur trim, looking at viewer, smile <lora:Disney_Renaissance_IllustriousV1:1>",
     "thumbnail": "/loras/thumbnails/Disney_Style.webp",
     "description": "A Lora model that captures the whimsical and enchanting style of classic Disney animations, perfect for creating magical and nostalgic imagery."
   },
@@ -19,7 +20,8 @@
     "title": "Studio Ghibli Flux",
     "trigger_keywords": ["ghiblistyle"],
     "thumbnail": "/loras/thumbnails/Studio_Ghibli_Flux.webp",
-    "description": "A Lora model that captures the enchanting and whimsical style of Studio Ghibli films, perfect for creating magical and nostalgic imagery."
+    "description": "A Lora model that captures the enchanting and whimsical style of Studio Ghibli films, perfect for creating magical and nostalgic imagery.",
+    "demo_prompt": "sgbl artstyle An enchanted forest bathed in moonlight, with glowing plants and creatures, and a small, hidden village nestled among ancient, towering trees."
   },
 
   {
@@ -43,20 +45,23 @@
     "title": "Aidma MJ6.1 FLUX v0.4",
     "trigger_keywords": ["aidmamj6.1"],
     "thumbnail": "/loras/thumbnails/aidmaMJ6.1-FLUX-v0.4.png",
-    "description": "A Lora model designed for generating images with a specific aesthetic, version 0.4."
+    "description": "A Lora model designed for generating images with a specific aesthetic, version 0.4.",
+    "demo_prompt": "Anime art,, Fisheye lens photo of a young girl, looking up at the camera. She is of Caucasian descent, with vibrant red hair cascading down her shoulders in loose waves.  Her expressive eyes, accentuated by perfectly arched eyebrows, convey a mixture of playful surprise and mischievous delight.  She’s positioned slightly off-center, her body angled three-quarters towards the viewer, with a slight tilt of her head adding to her charming nonchalance. She wears a sleek, black off-the-shoulder corset, the fabric appearing smooth and slightly glossy, clinging elegantly to her figure.  Large, gold loop earrings dangle against her jawline, catching the light.  Her stance is relaxed, yet poised, suggesting a confident and spirited personality. The background is black, providing a calming contrast to her fiery hair and the bold black of her dress. The lighting is dramatic, highlighting her features with a spotlight effect, while the background remains dark. The overall style realistic, vibrant twist, employing bold lines, exaggerated features, and a playful, slightly surreal atmosphere.  The palette is rich and saturated, with the red hair acting as a focal point against the cool teal background.  The texture is smooth on the dress, contrasting with the slightly more textured representation of her hair. The piece is rendered with a slight sense of depth, using subtle shading and highlighting to accentuate her form.  Wide angle lens,  high contrast,  vibrant colors."
   },
   {
     "name": "ArcaneFGTNR.safetensors",
     "title": "Arcane FGTNR",
     "trigger_keywords": ["ArcaneFGTNR"],
     "thumbnail": "/loras/thumbnails/ArcaneFGTNR.webp",
-    "description": "A Lora model inspired by the visual style of the animated series Arcane, designed to create images with a similar aesthetic."
+    "description": "A Lora model inspired by the visual style of the animated series Arcane, designed to create images with a similar aesthetic.",
+    "demo_prompt": " ArcaneFGTNRhigh stylish dark illustration of a cyberpunk femme fatale with blue braided long pigtails, vibrant rainbow eyes, glossy black lipstick, confident and alluring expression, cinematic lighting, dark futuristic background, ultra-detailed, vibrant colors."
   },
   {
     "name": "PASTEL (FLUX).safetensors",
     "title": "Pastel Flux",
     "trigger_keywords": ["Pastel", "drawing with dry chalk", "crayons"],
     "thumbnail": "/loras/thumbnails/PASTEL_FLUX.webp",
-    "description": "A Lora model that focuses on pastel color palettes, ideal for creating soft and dreamy images."
+    "description": "A Lora model that focuses on pastel color palettes, ideal for creating soft and dreamy images.",
+    "demo_prompt": "Cinematic style, realism, cinematic quality, Pastel, A vibrant, futuristic form with smooth curves and a golden sheen that created an otherworldly atmosphere. The night was thick with rain, its rhythmic drumbeats in the tall windows of the old manor mingling with the low hum of jazz drifting through the room. She moved through the crowd like smoke, dark and elusive, in a shimmering dress that seemed to catch the light in all the right places. Her (((mask of delicate black lace: 1.4))), clinging to her skin, revealed just enough to spark the imagination, but hid the most important parts: her eyes. Only her lips were open, painted a shade of red that seemed both dangerous and inviting, like a whispered secret. One that could kill a man. Simple yet captivating, the design caught the light reflections on its surface, adding depth and dimension. This digital work of art embodies modernity while simultaneously awakening curiosity about what lies beyond our consciousness."
   }
 ]
