@@ -124,14 +124,14 @@ export async function POST(request: NextRequest) {
 
           sendEvent("progress", {
             stage: "flux_api",
-            message: "正在调用 Flux Kontext Pro API...",
+            message: "正在调用 Flux Kontext API...",
           });
 
           const url = isMax
             ? `${FLUX_API_URL}/flux-kontext-max`
             : `${FLUX_API_URL}/flux-kontext-pro`;
 
-          // 调用 Flux Kontext Pro API
+          // 调用 Flux Kontext API
           const fluxResponse = await fetch(url, {
             method: "POST",
             headers: {
