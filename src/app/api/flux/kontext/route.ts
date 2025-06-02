@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
           const formData = await request.formData();
           const file = formData.get("file") as File;
           const prompt = formData.get("prompt") as string;
+          const isMax = formData.get("isMax") === "true";
 
           // 基本参数检查
           if (!file) {
@@ -126,8 +127,12 @@ export async function POST(request: NextRequest) {
             message: "正在调用 Flux Kontext Pro API...",
           });
 
+          const url = isMax
+            ? `${FLUX_API_URL}/flux-kontext-max`
+            : `${FLUX_API_URL}/flux-kontext-pro`;
+
           // 调用 Flux Kontext Pro API
-          const fluxResponse = await fetch(`${FLUX_API_URL}/flux-kontext-pro`, {
+          const fluxResponse = await fetch(url, {
             method: "POST",
             headers: {
               accept: "application/json",
