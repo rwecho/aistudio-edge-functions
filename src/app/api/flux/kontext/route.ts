@@ -142,6 +142,9 @@ export async function POST(request: NextRequest) {
             body: JSON.stringify({
               prompt: prompt,
               input_image: image_base64,
+              prompt_upsampling: true,
+              output_format: "png",
+              safety_tolerance: 2,
             }),
           });
 
