@@ -1,0 +1,53 @@
+# FLUX 基础工作流配置
+
+id: "flux-basic"
+name: "FLUX 基础图像生成"
+description: "使用 FLUX 模型进行基础图像生成"
+category: "image-generation"
+workflowFile: "flux-basic.json"
+version: "1.0.0"
+
+inputs:
+  - key: "prompt"
+    name: "提示词"
+    type: "string"
+    required: true
+    description: "图像生成的文本描述"
+    jsonPath: "6.inputs.text"
+
+  - key: "width"
+    name: "宽度"
+    type: "number"
+    required: false
+    defaultValue: 1024
+    min: 512
+    max: 2048
+    description: "生成图像的宽度"
+    jsonPath: "27.inputs.width"
+
+  - key: "height"
+    name: "高度"
+    type: "number"
+    required: false
+    defaultValue: 1024
+    min: 512
+    max: 2048
+    description: "生成图像的高度"
+    jsonPath: "27.inputs.height"
+
+  - key: "batch_size"
+    name: "批次大小"
+    type: "number"
+    required: false
+    defaultValue: 1
+    min: 1
+    max: 4
+    description: "一次生成的图像数量"
+    jsonPath: "27.inputs.batch_size"
+
+outputs:
+  - name: "generated_images"
+    type: "image"
+    description: "生成的图像"
+    nodeId: "9"
+    filenamePrefix: "flux-basic"

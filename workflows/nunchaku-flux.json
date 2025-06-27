@@ -1,0 +1,186 @@
+{
+  "89": {
+    "inputs": {
+      "model_path": "svdq-int4-flux.1-dev",
+      "cache_threshold": 0.105,
+      "attention": "nunchaku-fp16",
+      "cpu_offload": "auto",
+      "device_id": 0,
+      "data_type": "float16",
+      "i2f_mode": "enabled"
+    },
+    "class_type": "NunchakuFluxDiTLoader",
+    "_meta": {
+      "title": "Nunchaku FLUX DiT Loader"
+    }
+  },
+  "90": {
+    "inputs": {
+      "lora_name": "可爱3D通用型模型_v1.3.safetensors",
+      "lora_strength": 0.7000000000000001,
+      "model": ["91", 0]
+    },
+    "class_type": "NunchakuFluxLoraLoader",
+    "_meta": {
+      "title": "Nunchaku FLUX.1 LoRA Loader"
+    }
+  },
+  "91": {
+    "inputs": {
+      "lora_name": "Hand v2.safetensors",
+      "lora_strength": 1,
+      "model": ["144", 0]
+    },
+    "class_type": "NunchakuFluxLoraLoader",
+    "_meta": {
+      "title": "Nunchaku FLUX.1 LoRA Loader"
+    }
+  },
+  "92": {
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 4
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "空Latent图像"
+    }
+  },
+  "93": {
+    "inputs": {
+      "samples": ["95", 0],
+      "vae": ["104", 0]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "94": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": ["93", 0]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "保存图像"
+    }
+  },
+  "95": {
+    "inputs": {
+      "noise": ["99", 0],
+      "guider": ["98", 0],
+      "sampler": ["96", 0],
+      "sigmas": ["97", 0],
+      "latent_image": ["92", 0]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "自定义采样器（高级）"
+    }
+  },
+  "96": {
+    "inputs": {
+      "sampler_name": "euler"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "K采样器选择"
+    }
+  },
+  "97": {
+    "inputs": {
+      "scheduler": "simple",
+      "steps": 8,
+      "denoise": 0.97,
+      "model": ["90", 0]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "基本调度器"
+    }
+  },
+  "98": {
+    "inputs": {
+      "model": ["90", 0],
+      "conditioning": ["101", 0]
+    },
+    "class_type": "BasicGuider",
+    "_meta": {
+      "title": "基本引导器"
+    }
+  },
+  "99": {
+    "inputs": {
+      "noise_seed": 910047992083244
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "随机噪波"
+    }
+  },
+  "100": {
+    "inputs": {
+      "text": "a 3D cute girl , play yoga, on a chinese dragon board",
+      "clip": ["102", 0]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "101": {
+    "inputs": {
+      "guidance": 3.5,
+      "conditioning": ["100", 0]
+    },
+    "class_type": "FluxGuidance",
+    "_meta": {
+      "title": "Flux引导"
+    }
+  },
+  "102": {
+    "inputs": {
+      "clip_name1": "t5xxl_fp8_e4m3fn.safetensors",
+      "clip_name2": "clip_l.safetensors",
+      "type": "flux",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "双CLIP加载器"
+    }
+  },
+  "104": {
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "加载VAE"
+    }
+  },
+  "143": {
+    "inputs": {
+      "lora_name": "alimama-creative/FLUX.1-Turbo-Alpha.safetensors",
+      "lora_strength": 1,
+      "model": ["89", 0]
+    },
+    "class_type": "NunchakuFluxLoraLoader",
+    "_meta": {
+      "title": "Nunchaku FLUX.1 LoRA Loader"
+    }
+  },
+  "144": {
+    "inputs": {
+      "lora_name": "Flux_Dev_4_step_lora.safetensors",
+      "lora_strength": 1,
+      "model": ["143", 0]
+    },
+    "class_type": "NunchakuFluxLoraLoader",
+    "_meta": {
+      "title": "Nunchaku FLUX.1 LoRA Loader"
+    }
+  }
+}

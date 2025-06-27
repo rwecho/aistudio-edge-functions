@@ -1,0 +1,110 @@
+# Nunchaku FLUX 工作流配置
+# 这个 YAML 文件定义了工作流的输入参数、输出格式和元数据
+
+id: "nunchaku-flux"
+name: "Nunchaku FLUX 图像生成"
+description: "使用 Nunchaku FLUX 模型生成高质量图像，支持 LoRA 模型加载"
+category: "image-generation"
+workflowFile: "nunchaku-flux.json"
+version: "1.0.0"
+
+# 输入参数配置
+inputs:
+  - key: "prompt"
+    name: "提示词"
+    type: "string"
+    required: true
+    description: "图像生成的文本描述"
+    jsonPath: "100.inputs.text"
+
+  - key: "width"
+    name: "宽度"
+    type: "number"
+    required: false
+    defaultValue: 768
+    min: 512
+    max: 2048
+    description: "生成图像的宽度"
+    jsonPath: "92.inputs.width"
+
+  - key: "height"
+    name: "高度"
+    type: "number"
+    required: false
+    defaultValue: 1024
+    min: 512
+    max: 2048
+    description: "生成图像的高度"
+    jsonPath: "92.inputs.height"
+
+  - key: "batch_size"
+    name: "批次大小"
+    type: "number"
+    required: false
+    defaultValue: 1
+    min: 1
+    max: 4
+    description: "一次生成的图像数量"
+    jsonPath: "92.inputs.batch_size"
+
+  - key: "steps"
+    name: "采样步数"
+    type: "number"
+    required: false
+    defaultValue: 8
+    min: 1
+    max: 50
+    description: "图像生成的采样步数"
+    jsonPath: "97.inputs.steps"
+
+  - key: "seed"
+    name: "随机种子"
+    type: "number"
+    required: false
+    description: "图像生成的随机种子，相同种子会生成相似图像"
+    jsonPath: "99.inputs.noise_seed"
+
+  - key: "guidance"
+    name: "引导强度"
+    type: "number"
+    required: false
+    defaultValue: 3.5
+    min: 1
+    max: 20
+    description: "提示词引导强度"
+    jsonPath: "101.inputs.guidance"
+
+  - key: "denoise"
+    name: "去噪强度"
+    type: "number"
+    required: false
+    defaultValue: 0.97
+    min: 0.1
+    max: 1.0
+    description: "去噪强度，值越高变化越大"
+    jsonPath: "97.inputs.denoise"
+
+  - key: "lora_name"
+    name: "LoRA 模型"
+    type: "string"
+    required: false
+    description: "选择要使用的 LoRA 模型"
+    jsonPath: "90.inputs.lora_name"
+
+  - key: "lora_strength"
+    name: "LoRA 强度"
+    type: "number"
+    required: false
+    defaultValue: 0.7
+    min: 0
+    max: 2.0
+    description: "LoRA 模型的影响强度"
+    jsonPath: "90.inputs.lora_strength"
+
+# 输出配置
+outputs:
+  - name: "generated_images"
+    type: "image"
+    description: "生成的图像"
+    nodeId: "94"
+    filenamePrefix: "nunchaku-flux"
