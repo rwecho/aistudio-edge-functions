@@ -212,12 +212,13 @@ export default function AzureTTSDemo() {
         }),
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        setAudioUrl(data.url);
+      if (response.ok) {
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioUrl(audioUrl);
       } else {
-        setError(data.error || "生成失败");
+        const errorData = await response.json();
+        setError(errorData.error || "预览失败");
       }
     } catch (error) {
       setError("网络错误");
