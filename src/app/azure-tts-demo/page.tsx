@@ -155,7 +155,7 @@ export default function AzureTTSDemo() {
     setError("");
 
     try {
-      const response = await fetch("/api/azure-tts/preview", {
+      const response = await fetch("/api/azure-tts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -167,6 +167,8 @@ export default function AzureTTSDemo() {
           rate: rate !== "medium" ? rate : undefined,
           pitch: pitch !== "medium" ? pitch : undefined,
           volume: volume !== "medium" ? volume : undefined,
+          isPreview: true, // 标记为预览模式
+          uploadToCloud: false, // 预览不上传到云端
         }),
       });
 
@@ -206,7 +208,7 @@ export default function AzureTTSDemo() {
           rate: rate !== "medium" ? rate : undefined,
           pitch: pitch !== "medium" ? pitch : undefined,
           volume: volume !== "medium" ? volume : undefined,
-          uploadToCloud: true,
+          uploadToCloud: false,
         }),
       });
 

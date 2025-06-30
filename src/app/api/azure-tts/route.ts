@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 // 文本长度限制
 const MAX_TEXT_LENGTH = 5000;
 const MIN_TEXT_LENGTH = 1;
+const MAX_PREVIEW_TEXT_LENGTH = 200; // 预览文本长度限制
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,7 +21,8 @@ export async function POST(request: NextRequest) {
       rate,
       pitch,
       volume,
-      uploadToCloud = true,
+      uploadToCloud = false,
+      isPreview = false, // 新增预览模式参数
     } = body;
 
     // 参数验证
@@ -31,10 +33,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (text.length < MIN_TEXT_LENGTH || text.length > MAX_TEXT_LENGTH) {
+    // 根据是否是预览模式使用不同的文本长度限制
+    const maxLength = isPreview ? MAX_PREVIEW_TEXT_LENGTH : MAX_TEXT_LENGTH;
+
+    if (text.length < MIN_TEXT_LENGTH || text.length > maxLength) {
       return NextResponse.json(
         {
-          error: `文本长度必须在 ${MIN_TEXT_LENGTH} 到 ${MAX_TEXT_LENGTH} 字符之间`,
+          error: `文本长度必须在 ${MIN_TEXT_LENGTH} 到 ${maxLength} 字符之间${
+            isPreview ? "（预览模式）" : ""
+          }`,
         },
         { status: 400 }
       );
@@ -72,8 +79,8 @@ export async function POST(request: NextRequest) {
       volume,
     });
 
-    if (uploadToCloud) {
-      // 上传到阿里云OSS
+    if (uploadToCloud && !isPreview) {
+      // 上传到阿里云OSS（仅非预览模式）
       const fileName = `tts/${Date.now()}-${uuidv4()}.mp3`;
       await uploadToAliyun(audioBuffer, fileName);
 
@@ -86,16 +93,23 @@ export async function POST(request: NextRequest) {
         size: audioBuffer.length,
         voiceName,
         style,
+        isPreview: false,
       });
     } else {
-      // 直接返回音频文件
+      // 直接返回音频文件（预览模式或不上传云端）
+      const headers: Record<string, string> = {
+        "Content-Type": "audio/mpeg",
+        "Content-Length": audioBuffer.length.toString(),
+      };
+
+      // 预览模式设置较短的缓存时间，完整模式可以下载
+      headers[
+        "Content-Disposition"
+      ] = `attachment; filename="tts-${Date.now()}.mp3"`;
+
       return new NextResponse(audioBuffer, {
         status: 200,
-        headers: {
-          "Content-Type": "audio/mpeg",
-          "Content-Length": audioBuffer.length.toString(),
-          "Content-Disposition": `attachment; filename="tts-${Date.now()}.mp3"`,
-        },
+        headers,
       });
     }
   } catch (error) {
