@@ -64,9 +64,9 @@ inputs:
     name: "参考图像"
     type: "string"
     required: true
-    description: "Reference image filename from outputs"
-    default: "练了瑜伽才知道，孙俪说的是真的_1_wendy_来自小红书网页版.jpg [output]"
-    jsonPath: "142.inputs.image"
+    description: "Reference image url from outputs"
+    default: ""
+    jsonPath: "192.inputs.url"
 
 outputs:
   - name: "generated_images"

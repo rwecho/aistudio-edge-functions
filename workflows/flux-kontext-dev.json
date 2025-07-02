@@ -1,7 +1,7 @@
 {
   "6": {
     "inputs": {
-      "text": "change to Ghibli style",
+      "text": "change hair style, the hair even on all for sides, camera from the frontend view",
       "clip": ["38", 0]
     },
     "class_type": "CLIPTextEncode",
@@ -21,7 +21,7 @@
   },
   "31": {
     "inputs": {
-      "seed": 646184007869784,
+      "seed": 659244113233960,
       "steps": 8,
       "cfg": 1,
       "sampler_name": "euler",
@@ -116,27 +116,26 @@
       "title": "Save Image"
     }
   },
-  "142": {
-    "inputs": {
-      "image": "练了瑜伽才知道，孙俪说的是真的_1_wendy_来自小红书网页版.jpg [output]",
-      "refresh": "refresh"
-    },
-    "class_type": "LoadImageOutput",
-    "_meta": {
-      "title": "Load Image (from Outputs)"
-    }
-  },
   "146": {
     "inputs": {
       "direction": "right",
       "match_image_size": true,
       "spacing_width": 0,
       "spacing_color": "white",
-      "image1": ["142", 0]
+      "image1": ["192", 0]
     },
     "class_type": "ImageStitch",
     "_meta": {
       "title": "Image Stitch"
+    }
+  },
+  "173": {
+    "inputs": {
+      "images": ["42", 0]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
     }
   },
   "177": {
@@ -160,6 +159,15 @@
     "class_type": "LoraLoader",
     "_meta": {
       "title": "Load LoRA"
+    }
+  },
+  "192": {
+    "inputs": {
+      "url": "https://q5.itc.cn/images01/20250112/4347965fbafb47bba1b71ae560a00f6e.jpeg"
+    },
+    "class_type": "Load Image From Url (mtb)",
+    "_meta": {
+      "title": "Load Image From Url (mtb)"
     }
   }
 }
