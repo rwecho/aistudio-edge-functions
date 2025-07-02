@@ -1,0 +1,77 @@
+id: "nunchaku-kontext-dev"
+name: "Flux Kontext nunchaku Dev Basic"
+description: "Flux workflow with nunchaku kontext image-to-image generation using reference latent"
+version: "1.0"
+workflowFile: "nunchaku-kontext-dev.json"
+
+inputs:
+  - key: "prompt"
+    name: "提示词"
+    type: "string"
+    required: true
+    description: "Text prompt for image generation"
+    jsonPath: "25.inputs.text"
+    
+  - key: "seed"
+    name: "种子"
+    type: "integer"
+    required: false
+    description: "Random seed for generation"
+    default: 646184007869784
+    jsonPath: "20.inputs.seed"
+    
+  - key: "steps"
+    name: "步数"
+    type: "integer"
+    required: false
+    description: "Number of sampling steps"
+    default: 8
+    min: 1
+    max: 50
+    jsonPath: "20.inputs.steps"
+    
+  - key: "cfg"
+    name: "cfg"
+    type: "float"
+    required: false
+    description: "CFG scale"
+    default: 1.0
+    min: 0.1
+    max: 20.0
+    jsonPath: "20.inputs.cfg"
+    
+  - key: "guidance"
+    name: "guidance"
+    type: "float"
+    required: false
+    description: "Flux guidance strength"
+    default: 2.5
+    min: 0.1
+    max: 10.0
+    jsonPath: "12.inputs.guidance"
+
+  - key: "denoise"
+    name: "denoise"
+    type: "float"
+    required: false
+    description: "Denoising strength"
+    default: 1.0
+    min: 0.0
+    max: 1.0
+    jsonPath: "20.inputs.denoise"
+
+  - key: "reference_image"
+    name: "参考图像"
+    type: "string"
+    required: true
+    description: "Reference image url from outputs"
+    default: ""
+    jsonPath: "27.inputs.url"
+
+outputs:
+  - name: "generated_images"
+    type: "image"
+    description: "Generated images from the workflow"
+    nodeId: "5"
+    filenamePrefix: "kontext_dev"
+    
