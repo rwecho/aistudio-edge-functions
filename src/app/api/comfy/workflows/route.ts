@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body: WorkflowExecuteRequest = await request.json();
-    const { workflowId, inputs, saveToCloud = true } = body;
+    const { workflowId, inputs, saveToCloud } = body;
 
     // 获取工作流配置
     const config = await getWorkflowConfig(workflowId);

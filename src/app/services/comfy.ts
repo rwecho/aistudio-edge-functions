@@ -2,18 +2,18 @@ import { v4 as uuid } from "uuid";
 
 import "server-only";
 
-const getComfyuiUrl = () => {
-  const comfyuiUrl = process.env.COMFYUI_URL;
-  if (!comfyuiUrl) {
+const getComfyUiUrl = () => {
+  const comfyUiUrl = process.env.COMFYUI_URL;
+  if (!comfyUiUrl) {
     throw new Error("COMFYUI_URL is not set");
   }
-  return comfyuiUrl;
+  return comfyUiUrl;
 };
 
 const openWebSocket = () => {
-  const comfyuiUrl = getComfyuiUrl();
+  const comfyUiUrl = getComfyUiUrl();
   const clientId = uuid().replace(/-/g, "");
-  const wsUrl = new URL(`ws?clientId=${clientId}`, comfyuiUrl);
+  const wsUrl = new URL(`ws?clientId=${clientId}`, comfyUiUrl);
   console.log("WebSocket URL:", wsUrl.toString());
   wsUrl.protocol = wsUrl.protocol === "http:" ? "ws:" : "wss:";
   const ws = new WebSocket(wsUrl.toString());
@@ -21,10 +21,10 @@ const openWebSocket = () => {
 };
 
 const queuePrompt = async (clientId: string, workflow: Record<string, any>) => {
-  const comfyuiUrl = getComfyuiUrl();
-  console.log("queuePrompt url:", `${comfyuiUrl}/prompt`);
+  const comfyUiUrl = getComfyUiUrl();
+  console.log("queuePrompt url:", `${comfyUiUrl}/prompt`);
   console.log("queuePrompt clientId:", clientId);
-  const response = await fetch(`${comfyuiUrl}/prompt`, {
+  const response = await fetch(`${comfyUiUrl}/prompt`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +57,21 @@ const trackProgress = async (
 
     ws.onmessage = (event) => {
       console.log("WebSocket message received:", event.data);
-      const message = JSON.parse(event.data);
+
+      if (event.data instanceof ArrayBuffer || event.data instanceof Buffer) {
+        // 暂时不处理二进制数据
+        console.log("Received binary data");
+        // 处理二进制数据
+        return;
+      }
+      let message = {} as { type: string; data: any };
+      try {
+        message = JSON.parse(event.data);
+      } catch (error) {
+        console.error("Failed to parse WebSocket message:", error);
+        reject(error);
+      }
+
       if (message.type === "progress") {
         const data = message.data;
         const currentStep = data.value;
@@ -131,7 +145,7 @@ const trackProgress = async (
 };
 
 const getHistory = async (promptId: string) => {
-  const comfyuiUrl = getComfyuiUrl();
+  const comfyuiUrl = getComfyUiUrl();
   const response = await fetch(`${comfyuiUrl}/history?prompt_id=${promptId}`, {
     method: "GET",
     headers: {
@@ -147,9 +161,10 @@ const getHistory = async (promptId: string) => {
 };
 
 const getImage = async (filename: string, subfolder: string, type: string) => {
-  const comfyuiUrl = getComfyuiUrl();
+  const comfyUiUrl = getComfyUiUrl();
+  debugger;
   const response = await fetch(
-    `${comfyuiUrl}/view?filename=${filename}&subfolder=${subfolder}&type=${type}`,
+    `${comfyUiUrl}/view?filename=${filename}&subfolder=${subfolder}&type=${type}`,
     {
       method: "GET",
       headers: {
