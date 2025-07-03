@@ -162,7 +162,6 @@ const getHistory = async (promptId: string) => {
 
 const getImage = async (filename: string, subfolder: string, type: string) => {
   const comfyUiUrl = getComfyUiUrl();
-  debugger;
   const response = await fetch(
     `${comfyUiUrl}/view?filename=${filename}&subfolder=${subfolder}&type=${type}`,
     {
