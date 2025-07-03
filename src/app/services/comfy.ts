@@ -58,7 +58,11 @@ const trackProgress = async (
     ws.onmessage = (event) => {
       console.log("WebSocket message received:", event.data);
 
-      if (event.data instanceof ArrayBuffer || event.data instanceof Buffer) {
+      if (
+        event.data instanceof ArrayBuffer ||
+        event.data instanceof Buffer ||
+        event.data instanceof Blob
+      ) {
         // 暂时不处理二进制数据
         console.log("Received binary data");
         // 处理二进制数据
