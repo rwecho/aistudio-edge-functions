@@ -1,0 +1,198 @@
+import { Theme } from "../markdown";
+
+export const academicTheme: Theme = {
+  base: {
+    "--md-primary-color": `#1a202c`,
+    "text-align": `justify`,
+    "line-height": `1.6`,
+    "font-family": `'Times New Roman', Georgia, serif`,
+  },
+  block: {
+    container: {
+      "max-width": `800px`,
+      margin: `0 auto`,
+      padding: `3rem 2rem`,
+    },
+    h1: {
+      "font-size": `1.8rem`,
+      "font-weight": `bold`,
+      "text-align": `center`,
+      margin: `0 0 2rem 0`,
+      color: `#1a202c`,
+      "text-transform": `uppercase`,
+      "letter-spacing": `0.05em`,
+    },
+    h2: {
+      "font-size": `1.4rem`,
+      "font-weight": `bold`,
+      margin: `2.5rem 0 1rem 0`,
+      color: `#2d3748`,
+    },
+    h3: {
+      "font-size": `1.2rem`,
+      "font-weight": `bold`,
+      margin: `2rem 0 0.8rem 0`,
+      color: `#4a5568`,
+    },
+    h4: {
+      "font-size": `1.1rem`,
+      "font-weight": `bold`,
+      margin: `1.5rem 0 0.5rem 0`,
+      color: `#4a5568`,
+    },
+    h5: {
+      "font-size": `1rem`,
+      "font-weight": `bold`,
+      margin: `1.5rem 0 0.5rem 0`,
+      color: `#718096`,
+    },
+    h6: {
+      "font-size": `1rem`,
+      "font-weight": `bold`,
+      margin: `1.5rem 0 0.5rem 0`,
+      color: `#718096`,
+      "font-style": `italic`,
+    },
+    p: {
+      margin: `0 0 1rem 0`,
+      color: `#2d3748`,
+      "text-indent": `2em`,
+      "font-size": `1rem`,
+    },
+    blockquote: {
+      padding: `1rem 2rem`,
+      margin: `1.5rem 0`,
+      "border-left": `3px solid #a0aec0`,
+      background: `#f7fafc`,
+      "font-style": `italic`,
+    },
+    blockquote_p: {
+      color: `#4a5568`,
+      "text-indent": `0`,
+      margin: `0`,
+    },
+    blockquote_note: {},
+    blockquote_tip: {},
+    blockquote_info: {},
+    blockquote_important: {},
+    blockquote_warning: {},
+    blockquote_caution: {},
+    blockquote_title: {},
+    blockquote_title_note: {},
+    blockquote_title_tip: {},
+    blockquote_title_info: {},
+    blockquote_title_important: {},
+    blockquote_title_warning: {},
+    blockquote_title_caution: {},
+    blockquote_p_note: {},
+    blockquote_p_tip: {},
+    blockquote_p_info: {},
+    blockquote_p_important: {},
+    blockquote_p_warning: {},
+    blockquote_p_caution: {},
+    code_pre: {
+      padding: `1rem`,
+      "font-size": `0.9rem`,
+      "line-height": `1.4`,
+      background: `#f7fafc`,
+      border: `1px solid #e2e8f0`,
+      "border-radius": `4px`,
+      "overflow-x": `auto`,
+      margin: `1.5rem 0`,
+    },
+    code: {
+      padding: `0.125rem 0.25rem`,
+      "font-size": `0.9rem`,
+      background: `#edf2f7`,
+      "border-radius": `3px`,
+      "font-family": `'Courier New', Courier, monospace`,
+    },
+    image: {
+      "max-width": `100%`,
+      margin: `1.5rem auto`,
+      display: `block`,
+    },
+    ol: {
+      "padding-left": `2rem`,
+      margin: `0 0 1rem 0`,
+    },
+    ul: {
+      "padding-left": `2rem`,
+      margin: `0 0 1rem 0`,
+    },
+    footnotes: {
+      margin: `0`,
+      padding: `0`,
+    },
+    figure: {
+      margin: `0`,
+      padding: `0`,
+    },
+    hr: {
+      border: `1px solid #cbd5e0`,
+      margin: `1.5rem 0`,
+    },
+    block_katex: {
+      margin: `1.5rem 0`,
+      padding: `0`,
+    },
+  },
+  inline: {
+    listitem: {
+      margin: `0.25rem 0`,
+    },
+    codespan: {
+      padding: `0.125rem 0.25rem`,
+      "font-size": `0.9rem`,
+      background: `#edf2f7`,
+      "border-radius": `3px`,
+      "font-family": `'Courier New', Courier, monospace`,
+    },
+    link: {
+      color: `#2b6cb0`,
+      "text-decoration": `underline`,
+    },
+    wx_link: {
+      color: `#2b6cb0`,
+      "text-decoration": `underline`,
+    },
+    strong: {
+      "font-weight": `bold`,
+    },
+    table: {
+      "border-collapse": `collapse`,
+      width: `100%`,
+      margin: `1.5rem auto`,
+      "font-size": `0.9rem`,
+    },
+    thead: {
+      background: `#edf2f7`,
+      "font-weight": `bold`,
+    },
+    td: {
+      padding: `8px 12px`,
+      border: `1px solid #cbd5e0`,
+      "text-align": `left`,
+    },
+    footnote: {
+      "font-size": `0.8rem`,
+      color: `#718096`,
+    },
+    figcaption: {
+      "text-align": `center`,
+      color: `#718096`,
+      "font-size": `0.9rem`,
+      "font-style": `italic`,
+      margin: `0.5rem 0`,
+    },
+    em: {
+      "font-style": `italic`,
+    },
+    inline_katex: {
+      display: `inline-flex`,
+      "max-width": `100%`,
+      "overflow-x": `auto`,
+      "vertical-align": `middle`,
+    },
+  },
+};

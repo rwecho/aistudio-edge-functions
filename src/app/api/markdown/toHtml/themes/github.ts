@@ -1,0 +1,195 @@
+import { Theme } from "../markdown";
+
+export const githubTheme: Theme = {
+  base: {
+    "--md-primary-color": `#0969da`,
+    "text-align": `left`,
+    "line-height": `1.6`,
+    "font-family": `-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif`,
+  },
+  block: {
+    container: {
+      "max-width": `100%`,
+      margin: `0 auto`,
+      padding: `16px`,
+    },
+    h1: {
+      "font-size": `2em`,
+      "font-weight": `600`,
+      "padding-bottom": `0.3em`,
+      "border-bottom": `1px solid #d0d7de`,
+      margin: `0 0 16px 0`,
+      color: `#1f2328`,
+    },
+    h2: {
+      "font-size": `1.5em`,
+      "font-weight": `600`,
+      "padding-bottom": `0.3em`,
+      "border-bottom": `1px solid #d0d7de`,
+      margin: `24px 0 16px 0`,
+      color: `#1f2328`,
+    },
+    h3: {
+      "font-size": `1.25em`,
+      "font-weight": `600`,
+      margin: `24px 0 16px 0`,
+      color: `#1f2328`,
+    },
+    h4: {
+      "font-size": `1em`,
+      "font-weight": `600`,
+      margin: `24px 0 16px 0`,
+      color: `#1f2328`,
+    },
+    h5: {
+      "font-size": `0.875em`,
+      "font-weight": `600`,
+      margin: `24px 0 16px 0`,
+      color: `#1f2328`,
+    },
+    h6: {
+      "font-size": `0.85em`,
+      "font-weight": `600`,
+      margin: `24px 0 16px 0`,
+      color: `#656d76`,
+    },
+    p: {
+      margin: `0 0 16px 0`,
+      color: `#1f2328`,
+    },
+    blockquote: {
+      padding: `0 1em`,
+      color: `#656d76`,
+      "border-left": `0.25em solid #d0d7de`,
+      margin: `0 0 16px 0`,
+      background: `transparent`,
+    },
+    blockquote_p: {
+      color: `#656d76`,
+      margin: `0`,
+    },
+    blockquote_note: {},
+    blockquote_tip: {},
+    blockquote_info: {},
+    blockquote_important: {},
+    blockquote_warning: {},
+    blockquote_caution: {},
+    blockquote_title: {},
+    blockquote_title_note: {},
+    blockquote_title_tip: {},
+    blockquote_title_info: {},
+    blockquote_title_important: {},
+    blockquote_title_warning: {},
+    blockquote_title_caution: {},
+    blockquote_p_note: {},
+    blockquote_p_tip: {},
+    blockquote_p_info: {},
+    blockquote_p_important: {},
+    blockquote_p_warning: {},
+    blockquote_p_caution: {},
+    code_pre: {
+      padding: `16px`,
+      "font-size": `85%`,
+      "line-height": `1.45`,
+      background: `#f6f8fa`,
+      "border-radius": `6px`,
+      "overflow-x": `auto`,
+      margin: `0 0 16px 0`,
+    },
+    code: {
+      padding: `0.2em 0.4em`,
+      margin: `0`,
+      "font-size": `85%`,
+      background: `rgba(175,184,193,0.2)`,
+      "border-radius": `6px`,
+    },
+    image: {
+      "max-width": `100%`,
+      "box-sizing": `content-box`,
+    },
+    ol: {
+      "padding-left": `2em`,
+      margin: `0 0 16px 0`,
+    },
+    ul: {
+      "padding-left": `2em`,
+      margin: `0 0 16px 0`,
+    },
+    footnotes: {
+      margin: `0`,
+      padding: `0`,
+    },
+    figure: {
+      margin: `0 0 16px 0`,
+      padding: `0`,
+    },
+    hr: {
+      height: `1px`,
+      background: `#d0d7de`,
+      border: `0`,
+      margin: `24px 0`,
+    },
+    block_katex: {
+      margin: `0 0 16px 0`,
+      padding: `0`,
+    },
+  },
+  inline: {
+    listitem: {
+      margin: `0.25em 0`,
+    },
+    codespan: {
+      padding: `0.2em 0.4em`,
+      margin: `0`,
+      "font-size": `85%`,
+      background: `rgba(175,184,193,0.2)`,
+      "border-radius": `6px`,
+    },
+    link: {
+      color: `#0969da`,
+      "text-decoration": `none`,
+    },
+    wx_link: {
+      color: `#0969da`,
+      "text-decoration": `none`,
+    },
+    strong: {
+      "font-weight": `600`,
+    },
+    table: {
+      "border-spacing": `0`,
+      "border-collapse": `collapse`,
+      display: `block`,
+      width: `max-content`,
+      "max-width": `100%`,
+      "overflow-x": `auto`,
+      margin: `0 0 16px 0`,
+    },
+    thead: {
+      background: `transparent`,
+    },
+    td: {
+      padding: `6px 13px`,
+      border: `1px solid #d0d7de`,
+    },
+    footnote: {
+      "font-size": `12px`,
+      color: `#656d76`,
+    },
+    figcaption: {
+      "text-align": `center`,
+      color: `#656d76`,
+      "font-size": `0.9em`,
+      "font-style": `italic`,
+    },
+    em: {
+      "font-style": `italic`,
+    },
+    inline_katex: {
+      display: `inline-flex`,
+      "max-width": `100%`,
+      "overflow-x": `auto`,
+      "vertical-align": `middle`,
+    },
+  },
+};
