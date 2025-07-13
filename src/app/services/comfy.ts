@@ -112,7 +112,6 @@ const trackProgress = async (
           finishedNodes.size === nodeIds.length &&
           data.prompt_id === promptId
         ) {
-          debugger;
           resolve(void 0);
           ws.close();
           console.log("Prompt execution completed");

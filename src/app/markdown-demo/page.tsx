@@ -196,7 +196,6 @@ export default function MarkdownDemo() {
       });
 
       const data = await response.json();
-      debugger;
 
       if (!response.ok || !data.success) {
         throw new Error(data.error || "转换失败");
