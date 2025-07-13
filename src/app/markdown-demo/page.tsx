@@ -220,7 +220,7 @@ export default function MarkdownDemo() {
       window.getSelection()?.addRange(range);
       const success = document.execCommand("copy");
       // 清理
-      // window.getSelection()?.removeAllRanges();
+      window.getSelection()?.removeAllRanges();
 
       if (success) {
         alert("已复制富文本格式内容到剪贴板");
