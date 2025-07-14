@@ -29,6 +29,7 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/aistudio-edge-functions:latest
+          platforms: linux/amd64,linux/arm64
           
   deploy:
     needs: build
