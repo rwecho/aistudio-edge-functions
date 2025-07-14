@@ -230,6 +230,7 @@ export interface MarkdownOptions {
   fontFamily?: string; // 字体族
   primaryColor?: string; // 主题色
   markdownTheme?: string; // Markdown 主题名称
+  background?: string; // 背景样式
 }
 
 interface ParseResult {
@@ -380,10 +381,66 @@ export function customizeTheme(
     fontSize?: number;
     fontFamily?: string;
     color?: string;
+    background?: string;
   }
 ) {
   const newTheme = JSON.parse(JSON.stringify(theme));
-  const { fontSize, fontFamily, color } = options;
+  const { fontSize, fontFamily, color, background } = options;
+
+  // 定义背景样式映射 - 优化阅读体验
+  const backgroundStyles: Record<string, any> = {
+    none: {
+      background: "#ffffff",
+    },
+    gradient: {
+      "background-image": "linear-gradient(135deg, #fafafa 0%, #f0f4f8 100%)",
+    },
+    grid: {
+      "background-image":
+        "linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px), linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)",
+      "background-size": "24px 24px",
+      "background-position": "center center",
+      "background-color": "#fefefe",
+    },
+    dots: {
+      "background-color": "#fefefe",
+      "background-image":
+        "radial-gradient(circle, rgba(0,0,0,0.04) 0.5px, transparent 0.5px)",
+      "background-size": "16px 16px",
+    },
+    lines: {
+      "background-color": "#fefefe",
+      "background-image":
+        "repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(0,0,0,0.015) 12px, rgba(0,0,0,0.015) 24px)",
+    },
+    waves: {
+      "background-color": "#fefefe",
+      "background-image":
+        "linear-gradient(90deg, rgba(0,0,0,0.015) 50%, transparent 50%)",
+      "background-size": "32px 32px",
+    },
+    paper: {
+      "background-color": "#fefefe",
+      "background-image":
+        "linear-gradient(90deg, rgba(100,100,100,0.01) 50%, transparent 50%), linear-gradient(180deg, rgba(100,100,100,0.01) 50%, transparent 50%)",
+      "background-size": "1px 1px",
+    },
+    graph: {
+      "background-color": "#fefefe",
+      "background-image":
+        "linear-gradient(rgba(0,0,0,0.03) 0.5px, transparent 0.5px), linear-gradient(90deg, rgba(0,0,0,0.03) 0.5px, transparent 0.5px)",
+      "background-size": "20px 20px",
+    },
+    shadow: {
+      background: "#ffffff",
+      "box-shadow": "inset 0 0 120px rgba(0,0,0,0.015)",
+    },
+    fabric: {
+      "background-color": "#fafafa",
+      "background-image":
+        "repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(0,0,0,0.008) 3px, rgba(0,0,0,0.008) 6px)",
+    },
+  };
 
   // 设置字号
   if (fontSize) {
@@ -416,6 +473,22 @@ export function customizeTheme(
   if (color) {
     newTheme.base[`--md-primary-color`] = color;
   }
+
+  // 设置背景样式
+  if (background && backgroundStyles[background]) {
+    const bgStyles = backgroundStyles[background];
+    // 清除可能存在的旧背景样式
+    delete newTheme.block.container["background-image"];
+    delete newTheme.block.container["background-size"];
+    delete newTheme.block.container["background-position"];
+    delete newTheme.block.container["background"];
+    delete newTheme.block.container["background-color"];
+    delete newTheme.block.container["box-shadow"];
+
+    // 应用新的背景样式
+    Object.assign(newTheme.block.container, bgStyles);
+  }
+
   return newTheme as Theme;
 }
 
@@ -535,11 +608,17 @@ function buildTheme(isUseIndent: boolean, theme: Theme): ThemeStyles {
 const initRenderer = (options: MarkdownOptions) => {
   // 根据选项自定义主题
   let customizedTheme = options.theme;
-  if (options.fontSize || options.fontFamily || options.primaryColor) {
+  if (
+    options.fontSize ||
+    options.fontFamily ||
+    options.primaryColor ||
+    options.background
+  ) {
     customizedTheme = customizeTheme(options.theme, {
       fontSize: options.fontSize,
       fontFamily: options.fontFamily,
       color: options.primaryColor,
+      background: options.background,
     });
   }
 
@@ -968,6 +1047,7 @@ export const renderToHtmlWithTheme = async (
     fontFamily: options.fontFamily,
     primaryColor: options.primaryColor,
     markdownTheme: options.markdownTheme,
+    background: options.background,
   });
   return await renderer.render(markdown);
 };

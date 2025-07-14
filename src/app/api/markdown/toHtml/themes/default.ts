@@ -13,10 +13,7 @@ export const defaultTheme: Theme = {
       "font-family":
         "Optima-Regular, Optima, PingFangTC-Light, PingFangSC-light, PingFangTC-light",
       "letter-spacing": "2px",
-      "background-image":
-        "linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%)",
-      "background-size": "20px 20px",
-      "background-position": "center center",
+      "background-image": "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
       padding: "16px 8px",
     },
     // 一级标题

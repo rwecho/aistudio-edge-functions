@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 // highlight.js 主题列表
 const codeBlockThemes = [
@@ -105,15 +105,6 @@ const fontFamilyOptions = [
   },
 ];
 
-// 图片标题显示选项
-const imageCaptionOptions = [
-  { value: "none", label: "不显示标题" },
-  { value: "alt", label: "显示 Alt 文本" },
-  { value: "title", label: "显示 Title 文本" },
-  { value: "alt-title", label: "优先 Alt，备选 Title" },
-  { value: "title-alt", label: "优先 Title，备选 Alt" },
-];
-
 // 主题色预设选项
 const primaryColorOptions = [
   { value: "#000000", label: "经典黑色", color: "#000000" },
@@ -146,8 +137,195 @@ const markdownThemeOptions = [
   { value: "blog", label: "博客文章", description: "适合博客和个人写作" },
 ];
 
+// 背景样式选项
+const backgroundOptions = [
+  {
+    value: "none",
+    label: "纯净白底",
+    description: "纯白背景，最佳阅读体验",
+    css: { background: "#ffffff" },
+  },
+  {
+    value: "gradient",
+    label: "淡雅渐变",
+    description: "柔和渐变，护眼舒适",
+    css: {
+      "background-image": "linear-gradient(135deg, #fafafa 0%, #f0f4f8 100%)",
+    },
+  },
+  {
+    value: "grid",
+    label: "淡雅网格",
+    description: "超淡网格线，不干扰阅读",
+    css: {
+      "background-image":
+        "linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px), linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)",
+      "background-size": "24px 24px",
+      "background-position": "center center",
+      "background-color": "#fefefe",
+    },
+  },
+  {
+    value: "dots",
+    label: "微点纹理",
+    description: "极淡点状，增加层次感",
+    css: {
+      "background-color": "#fefefe",
+      "background-image":
+        "radial-gradient(circle, rgba(0,0,0,0.04) 0.5px, transparent 0.5px)",
+      "background-size": "16px 16px",
+    },
+  },
+  {
+    value: "lines",
+    label: "轻柔斜纹",
+    description: "若隐若现的斜线纹理",
+  },
+  {
+    value: "waves",
+    label: "淡雅波纹",
+    description: "微妙波纹，柔和视觉",
+  },
+  {
+    value: "paper",
+    label: "纸质肌理",
+    description: "仿纸张质感，护眼阅读",
+  },
+  {
+    value: "graph",
+    label: "淡雅方格",
+    description: "超淡方格线，专业感",
+  },
+  {
+    value: "shadow",
+    label: "柔和阴影",
+    description: "内阴影效果，增加深度",
+  },
+  {
+    value: "fabric",
+    label: "织物质感",
+    description: "极淡织物纹理，温暖舒适",
+  },
+];
+
 export default function MarkdownDemo() {
-  const [markdown, setMarkdown] = useState(``);
+  const [markdown, setMarkdown] = useState(`# Markdown 编辑器演示
+
+[toc]
+
+## 1. 简介
+
+这是一个功能强大的 Markdown 编辑器，支持实时预览、代码高亮、目录生成等功能。
+
+## 2. 基础语法
+
+### 2.1 标题
+
+支持 6 级标题，通过 \`#\` 符号表示：
+
+\`\`\`markdown
+# 一级标题
+## 二级标题
+### 三级标题
+\`\`\`
+
+### 2.2 强调
+
+可以使用 **粗体** 和 *斜体* 来强调文本。
+
+### 2.3 列表
+
+#### 无序列表：
+- 第一项
+- 第二项
+  - 嵌套项目
+  - 另一个嵌套项目
+
+#### 有序列表：
+1. 第一步
+2. 第二步
+3. 第三步
+
+### 2.4 引用
+
+> 这是一个引用块
+> 
+> 可以包含多行内容
+
+### 2.5 代码
+
+行内代码：\`console.log('Hello World')\`
+
+代码块：
+
+\`\`\`javascript
+function hello() {
+  console.log('Hello, Markdown!');
+  return 'success';
+}
+
+hello();
+\`\`\`
+
+\`\`\`python
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+print(fibonacci(10))
+\`\`\`
+
+### 2.6 表格
+
+| 功能 | 支持 | 备注 |
+|------|------|------|
+| 实时预览 | ✅ | 快速响应 |
+| 代码高亮 | ✅ | 多种主题 |
+| 目录生成 | ✅ | 自动锚点 |
+| 字体控制 | ✅ | 多种字体 |
+
+### 2.7 链接
+
+[GitHub](https://github.com) | [官方文档](https://markdown-it.github.io/)
+
+### 2.8 图片
+
+![Markdown Logo](https://markdown-here.com/img/icon256.png)
+
+## 3. 高级功能
+
+### 3.1 数学公式
+
+内联公式：$E = mc^2$
+
+块级公式：
+
+$$
+\\frac{1}{n} \\sum_{i=1}^{n} x_i = \\bar{x}
+$$
+
+### 3.2 任务列表
+
+- [x] 完成基础功能
+- [x] 添加代码高亮
+- [x] 实现目录生成
+- [ ] 添加更多主题
+- [ ] 支持插件系统
+
+### 3.3 脚注
+
+这里有一个脚注[^1]。
+
+[^1]: 这是脚注的内容
+
+## 4. 结语
+
+感谢使用这个 Markdown 编辑器！如果您有任何建议或问题，欢迎反馈。
+
+---
+
+**提示：** 尝试修改顶部菜单栏设置来自定义预览效果！`);
   const [selectedTheme, setSelectedTheme] = useState("github");
   const [markdownTheme, setMarkdownTheme] = useState("default");
   const [isMacCodeBlock, setIsMacCodeBlock] = useState(true);
@@ -156,14 +334,33 @@ export default function MarkdownDemo() {
   const [isUseIndent, setIsUseIndent] = useState(true);
   const [fontSize, setFontSize] = useState(16);
   const [fontFamily, setFontFamily] = useState("system-ui");
-  const [imageCaption, setImageCaption] = useState("alt");
   const [primaryColor, setPrimaryColor] = useState("#000000");
+  const [background, setBackground] = useState("none");
 
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [tocItems, setTocItems] = useState<
+    Array<{ id: string; text: string; level: number }>
+  >([]);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
-  const convertMarkdown = async () => {
+  // 从 HTML 中提取目录
+  const extractTocFromHtml = useCallback((html: string) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const headings = doc.querySelectorAll("h1, h2, h3, h4, h5, h6");
+
+    const items = Array.from(headings).map((heading) => ({
+      id: heading.id || "",
+      text: heading.textContent || "",
+      level: parseInt(heading.tagName.substring(1)),
+    }));
+
+    setTocItems(items);
+  }, []);
+
+  const convertMarkdown = useCallback(async () => {
     if (!markdown.trim()) {
       setError("请输入 Markdown 内容");
       return;
@@ -189,8 +386,9 @@ export default function MarkdownDemo() {
             isUseIndent: isUseIndent,
             fontSize: fontSize,
             fontFamily: fontFamily,
-            legend: imageCaption,
+            legend: "alt",
             primaryColor: primaryColor,
+            background: background,
           },
         }),
       });
@@ -202,12 +400,69 @@ export default function MarkdownDemo() {
       }
 
       setResult(data);
+
+      // 提取目录
+      if (data.html) {
+        extractTocFromHtml(data.html);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "未知错误");
     } finally {
       setLoading(false);
     }
-  };
+  }, [
+    markdown,
+    selectedTheme,
+    markdownTheme,
+    isMacCodeBlock,
+    showReadingTime,
+    showCiteStatus,
+    isUseIndent,
+    fontSize,
+    fontFamily,
+    primaryColor,
+    background,
+    extractTocFromHtml,
+  ]);
+
+  // 自动转换内容 - 防抖处理
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (markdown.trim()) {
+        convertMarkdown();
+      }
+    }, 500); // 500ms 防抖延迟
+
+    return () => clearTimeout(timeoutId);
+  }, [
+    markdown,
+    selectedTheme,
+    markdownTheme,
+    isMacCodeBlock,
+    showReadingTime,
+    showCiteStatus,
+    isUseIndent,
+    fontSize,
+    fontFamily,
+    primaryColor,
+    background,
+    convertMarkdown,
+  ]); // 当任何相关选项变化时都会自动转换
+
+  // 点击外部区域关闭菜单
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (activeMenu && !target.closest("[data-menu]")) {
+        setActiveMenu(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [activeMenu]);
 
   const copyRichText = async () => {
     try {
@@ -234,290 +489,389 @@ export default function MarkdownDemo() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            高级 Markdown 转 HTML 工具
-          </h1>
-          <p className="text-lg text-gray-600">
-            支持目录生成、代码高亮、字体字号、图片标题、滚动条美化等高级功能
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* 顶部菜单栏 - 类似现代编辑器样式 */}
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="flex items-center justify-between px-4 py-2">
+          {/* 左侧标题和菜单 */}
+          <div className="flex items-center gap-1">
+            <h1 className="text-lg font-semibold text-gray-900 mr-4">
+              Markdown 编辑器
+            </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* 输入区域 */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex flex-col items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">
-                Markdown 输入
-              </h2>
-              <div className="flex flex-wrap gap-4 pt-4">
-                {/* Markdown 主题选择 */}
-                <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="markdown-theme-select"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    文档主题:
-                  </label>
-                  <select
-                    id="markdown-theme-select"
-                    value={markdownTheme}
-                    onChange={(e) => setMarkdownTheme(e.target.value)}
-                    className="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    {markdownThemeOptions.map((theme) => (
-                      <option
-                        key={theme.value}
-                        value={theme.value}
-                        title={theme.description}
+            {/* 主菜单项 */}
+            <div className="flex items-center" data-menu>
+              {/* 文件菜单 */}
+              <div className="relative">
+                <button
+                  onClick={() =>
+                    setActiveMenu(activeMenu === "file" ? null : "file")
+                  }
+                  className="px-3 py-1 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                >
+                  文件
+                </button>
+                {activeMenu === "file" && (
+                  <div className="absolute top-full left-0 mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                    <div className="py-1">
+                      <button
+                        onClick={() => {
+                          copyRichText();
+                          setActiveMenu(null);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        {theme.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* 主题选择 */}
-                <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="theme-select"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    代码主题:
-                  </label>
-                  <select
-                    id="theme-select"
-                    value={selectedTheme}
-                    onChange={(e) => setSelectedTheme(e.target.value)}
-                    className="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    {codeBlockThemes.map((theme) => (
-                      <option key={theme.value} value={theme.value}>
-                        {theme.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Mac 装饰开关 */}
-                <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="mac-toggle"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Mac 装饰:
-                  </label>
-                  <input
-                    id="mac-toggle"
-                    type="checkbox"
-                    checked={isMacCodeBlock}
-                    onChange={(e) => setIsMacCodeBlock(e.target.checked)}
-                    className="rounded focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                {/* 阅读时间开关 */}
-                <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="reading-time-toggle"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    字数统计:
-                  </label>
-                  <input
-                    id="reading-time-toggle"
-                    type="checkbox"
-                    checked={showReadingTime}
-                    onChange={(e) => setShowReadingTime(e.target.checked)}
-                    className="rounded focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                {/* 引用状态开关 */}
-                <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="cite-status-toggle"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    引用链接:
-                  </label>
-                  <input
-                    id="cite-status-toggle"
-                    type="checkbox"
-                    checked={showCiteStatus}
-                    onChange={(e) => setShowCiteStatus(e.target.checked)}
-                    className="rounded focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                {/* 缩进开关 */}
-                <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="indent-toggle"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    段落缩进:
-                  </label>
-                  <input
-                    id="indent-toggle"
-                    type="checkbox"
-                    checked={isUseIndent}
-                    onChange={(e) => setIsUseIndent(e.target.checked)}
-                    className="rounded focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                        复制富文本
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* 字体和字号控制 */}
-              <div className="flex flex-wrap items-center gap-4 mt-4">
-                {/* 字号控制 */}
-                <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="font-size-range"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    字号:
-                  </label>
-                  <input
-                    id="font-size-range"
-                    type="range"
-                    min="12"
-                    max="24"
-                    step="1"
-                    value={fontSize}
-                    onChange={(e) => setFontSize(Number(e.target.value))}
-                    className="w-20"
-                  />
-                  <span className="text-sm text-gray-600 min-w-[3rem]">
-                    {fontSize}px
-                  </span>
-                </div>
+              {/* 格式菜单 */}
+              <div className="relative">
+                <button
+                  onClick={() =>
+                    setActiveMenu(activeMenu === "format" ? null : "format")
+                  }
+                  className="px-3 py-1 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                >
+                  格式
+                </button>
+                {activeMenu === "format" && (
+                  <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                    <div className="p-3 space-y-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">
+                          字体
+                        </label>
+                        <select
+                          value={fontFamily}
+                          onChange={(e) => setFontFamily(e.target.value)}
+                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                          title="选择字体"
+                        >
+                          {fontFamilyOptions.map((font) => (
+                            <option key={font.value} value={font.value}>
+                              {font.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
 
-                {/* 字体选择 */}
-                <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="font-family-select"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    字体:
-                  </label>
-                  <select
-                    id="font-family-select"
-                    value={fontFamily}
-                    onChange={(e) => setFontFamily(e.target.value)}
-                    className="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    {fontFamilyOptions.map((font) => (
-                      <option key={font.value} value={font.value}>
-                        {font.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">
+                          字号: {fontSize}px
+                        </label>
+                        <input
+                          type="range"
+                          min="12"
+                          max="24"
+                          step="1"
+                          value={fontSize}
+                          onChange={(e) => setFontSize(Number(e.target.value))}
+                          className="w-full"
+                          title="调整字体大小"
+                          aria-label="字体大小"
+                        />
+                      </div>
 
-                {/* 图片标题选择 */}
-                <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="image-caption-select"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    图片标题:
-                  </label>
-                  <select
-                    id="image-caption-select"
-                    value={imageCaption}
-                    onChange={(e) => setImageCaption(e.target.value)}
-                    className="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    {imageCaptionOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">
+                          主题色
+                        </label>
+                        <select
+                          value={primaryColor}
+                          onChange={(e) => setPrimaryColor(e.target.value)}
+                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                          title="选择主题色"
+                        >
+                          {primaryColorOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="p-3 space-y-3">
+                      <label className="flex items-center gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={isMacCodeBlock}
+                          onChange={(e) => setIsMacCodeBlock(e.target.checked)}
+                          className="rounded"
+                        />
+                        <span className="text-gray-700">Mac装饰</span>
+                      </label>
 
-                {/* 主题色 */}
-                <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="primary-color-select"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    主题色:
-                  </label>
-                  <select
-                    id="primary-color-select"
-                    value={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    {primaryColorOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                      <label className="flex items-center gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={showReadingTime}
+                          onChange={(e) => setShowReadingTime(e.target.checked)}
+                          className="rounded"
+                        />
+                        <span className="text-gray-700">字数统计</span>
+                      </label>
+
+                      <label className="flex items-center gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={showCiteStatus}
+                          onChange={(e) => setShowCiteStatus(e.target.checked)}
+                          className="rounded"
+                        />
+                        <span className="text-gray-700">引用链接</span>
+                      </label>
+
+                      <label className="flex items-center gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={isUseIndent}
+                          onChange={(e) => setIsUseIndent(e.target.checked)}
+                          className="rounded"
+                        />
+                        <span className="text-gray-700">段落缩进</span>
+                      </label>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 转换主题菜单 */}
+              <div className="relative">
+                <button
+                  onClick={() =>
+                    setActiveMenu(activeMenu === "theme" ? null : "theme")
+                  }
+                  className="px-3 py-1 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                >
+                  转换主题
+                </button>
+                {activeMenu === "theme" && (
+                  <div className="absolute top-full left-0 mt-1 w-72 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                    <div className="p-3 space-y-2">
+                      {markdownThemeOptions.map((theme) => (
+                        <button
+                          key={theme.value}
+                          onClick={() => {
+                            setMarkdownTheme(theme.value);
+                            setActiveMenu(null);
+                          }}
+                          className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
+                            markdownTheme === theme.value
+                              ? "bg-blue-50 text-blue-700 border border-blue-200"
+                              : "hover:bg-gray-50 text-gray-700"
+                          }`}
+                        >
+                          <div className="font-medium">{theme.label}</div>
+                          <div className="text-xs text-gray-500">
+                            {theme.description}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 代码主题菜单 */}
+              <div className="relative">
+                <button
+                  onClick={() =>
+                    setActiveMenu(activeMenu === "code" ? null : "code")
+                  }
+                  className="px-3 py-1 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                >
+                  代码主题
+                </button>
+                {activeMenu === "code" && (
+                  <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
+                    <div className="p-2">
+                      <div className="grid grid-cols-2 gap-1">
+                        {codeBlockThemes.map((theme) => (
+                          <button
+                            key={theme.value}
+                            onClick={() => {
+                              setSelectedTheme(theme.value);
+                              setActiveMenu(null);
+                            }}
+                            className={`text-left px-2 py-1 rounded text-xs transition-colors ${
+                              selectedTheme === theme.value
+                                ? "bg-blue-50 text-blue-700 border border-blue-200"
+                                : "hover:bg-gray-50 text-gray-700"
+                            }`}
+                          >
+                            {theme.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 背景样式菜单 */}
+              <div className="relative">
+                <button
+                  onClick={() =>
+                    setActiveMenu(
+                      activeMenu === "background" ? null : "background"
+                    )
+                  }
+                  className="px-3 py-1 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                >
+                  背景
+                </button>
+                {activeMenu === "background" && (
+                  <div className="absolute top-full left-0 mt-1 w-72 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                    <div className="p-3 space-y-2">
+                      {backgroundOptions.map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => {
+                            setBackground(option.value);
+                            setActiveMenu(null);
+                          }}
+                          className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
+                            background === option.value
+                              ? "bg-blue-50 text-blue-700 border border-blue-200"
+                              : "hover:bg-gray-50 text-gray-700"
+                          }`}
+                        >
+                          <div className="font-medium">{option.label}</div>
+                          <div className="text-xs text-gray-500">
+                            {option.description}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
+          </div>
 
+          {/* 右侧状态和操作 */}
+          <div className="flex items-center gap-3">
+            {/* 状态指示器 */}
+            {loading && (
+              <div className="flex items-center gap-2 text-xs text-blue-600">
+                <div className="animate-spin w-3 h-3 border border-blue-600 border-t-transparent rounded-full"></div>
+                <span>转换中</span>
+              </div>
+            )}
+
+            {/* 错误提示 */}
+            {error && (
+              <div
+                className="text-xs text-red-600 max-w-xs truncate"
+                title={error}
+              >
+                错误: {error}
+              </div>
+            )}
+
+            {/* 字数统计 */}
+            {result && result.info && (
+              <div className="text-xs text-gray-500">
+                {result.info.words || 0} 字
+              </div>
+            )}
+
+            <button
+              onClick={copyRichText}
+              className="px-3 py-1 text-xs bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+              title="复制富文本格式"
+            >
+              复制富文本
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex h-[calc(100vh-48px)]">
+        {/* 左侧编辑区域 */}
+        <div className="w-1/2 bg-white border-r border-gray-200 flex flex-col">
+          {/* 编辑器区域 */}
+          <div className="flex-1 p-4">
             <textarea
               value={markdown}
               onChange={(e) => setMarkdown(e.target.value)}
-              className="w-full h-96 p-4 border border-gray-300 rounded-md font-mono text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full h-full p-4 border border-gray-300 rounded-md font-mono text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="在这里输入你的 Markdown 内容..."
             />
-
-            <div className="mt-4 flex gap-3">
-              <button
-                onClick={convertMarkdown}
-                disabled={loading}
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? "转换中..." : "转换为 HTML"}
-              </button>
-            </div>
-
-            {error && (
-              <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-                {error}
-              </div>
-            )}
           </div>
+        </div>
 
-          {/* 输出区域 */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">HTML 输出</h2>
-              {result && (
-                <div className="flex gap-2 flex-wrap">
-                  <button
-                    onClick={copyRichText}
-                    className="px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
-                    title="复制富文本格式，可直接粘贴到Word等应用"
-                  >
-                    复制富文本
-                  </button>
+        {/* 右侧预览区域 */}
+        <div className="w-1/2 bg-white flex">
+          {/* 预览内容 */}
+          <div className="flex-1 flex flex-col">
+            {/* 预览内容区域 */}
+            <div className="flex-1 overflow-auto p-6">
+              {result ? (
+                <section
+                  className="markdown-content"
+                  dangerouslySetInnerHTML={{ __html: result.html }}
+                />
+              ) : (
+                <div className="text-center text-gray-500 mt-20">
+                  <p>请在左侧输入 Markdown 内容</p>
+                  <p className="text-sm mt-2">内容将自动转换为 HTML 预览</p>
                 </div>
               )}
             </div>
-
-            {result && (
-              <div className="space-y-4 ">
-                {/* 预览区域 */}
-                <div className="border border-gray-200 rounded-md">
-                  <div className=" p-4 min-h-96 max-h-128 overflow-auto">
-                    <section
-                      className="markdown-content"
-                      dangerouslySetInnerHTML={{ __html: result.html }}
-                    ></section>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
+
+          {/* 右侧目录（TOC） */}
+          {result && (
+            <div className="w-64 border-l border-gray-200 bg-gray-50">
+              <div className="p-3 border-b border-gray-200">
+                <h3 className="text-sm font-semibold text-gray-800">目录</h3>
+              </div>
+              <div className="p-3 text-xs overflow-auto max-h-full">
+                {tocItems.length > 0 ? (
+                  <nav className="space-y-1">
+                    {tocItems.map((item, index) => (
+                      <a
+                        key={index}
+                        href={`#${item.id}`}
+                        className={`block py-1 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors ${
+                          item.level === 1
+                            ? "font-semibold"
+                            : item.level === 2
+                            ? "ml-2"
+                            : item.level === 3
+                            ? "ml-4 text-xs"
+                            : item.level === 4
+                            ? "ml-6 text-xs"
+                            : item.level === 5
+                            ? "ml-8 text-xs"
+                            : "ml-10 text-xs"
+                        }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const element = document.getElementById(item.id);
+                          if (element) {
+                            element.scrollIntoView({ behavior: "smooth" });
+                          }
+                        }}
+                      >
+                        {item.text}
+                      </a>
+                    ))}
+                  </nav>
+                ) : (
+                  <div className="text-gray-500">
+                    <p className="mb-2">暂无目录</p>
+                    <p className="text-xs">转换 Markdown 后将显示标题目录</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
