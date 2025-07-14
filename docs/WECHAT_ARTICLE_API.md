@@ -32,7 +32,6 @@ AISTUDIOX_API_URL=https://www.aistudiox.design
   "content_source_url": "原文链接", // 可选
   "thumb_url": "封面图片URL", // 可选
   "thumb_media_id": "封面图片media_id", // 可选，优先于thumb_url
-  "process_images": true, // 可选，是否自动处理图片，默认true
   "need_open_comment": 1 // 可选，是否开启评论，0关闭1开启，默认1
 }
 ```

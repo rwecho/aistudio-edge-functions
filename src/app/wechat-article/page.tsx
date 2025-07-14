@@ -17,7 +17,6 @@ export default function WeChatArticlePage() {
     content_source_url: "https://www.aistudiox.design",
     thumb_url:
       "https://www.aistudiox.design/api/oss?ossKey=db9c7bc7/photo_2025-04-07_14-00-02.jpg",
-    process_images: true,
     need_open_comment: 1,
   });
 
@@ -156,17 +155,6 @@ export default function WeChatArticlePage() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="process_images"
-                  checked={formData.process_images}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                <span className="text-sm text-gray-700">自动处理图片</span>
-              </label>
-
               <label className="flex items-center">
                 <span className="text-sm text-gray-700 mr-2">开启评论:</span>
                 <select
