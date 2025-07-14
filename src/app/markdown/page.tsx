@@ -464,6 +464,16 @@ $$
     };
   }, [activeMenu]);
 
+  const copyHtml = async () => {
+    try {
+      await navigator.clipboard.writeText(result?.html || "");
+      alert("已复制 HTML 格式内容到剪贴板");
+    } catch (err) {
+      console.error("复制 HTML 失败:", err);
+      alert("复制 HTML 失败，请尝试其他复制方式");
+    }
+  };
+
   const copyRichText = async () => {
     try {
       const markdownElement = document.querySelector(".markdown-content")!;
@@ -773,19 +783,20 @@ $$
               </div>
             )}
 
-            {/* 字数统计 */}
-            {result && result.info && (
-              <div className="text-xs text-gray-500">
-                {result.info.words || 0} 字
-              </div>
-            )}
-
             <button
               onClick={copyRichText}
               className="px-3 py-1 text-xs bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
               title="复制富文本格式"
             >
               复制富文本
+            </button>
+
+            <button
+              onClick={copyHtml}
+              className="px-3 py-1 text-xs bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+              title="复制 HTML 格式"
+            >
+              复制 HTML
             </button>
           </div>
         </div>

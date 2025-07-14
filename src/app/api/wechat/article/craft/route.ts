@@ -25,7 +25,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    debugger;
     const articleData = validationResult.data;
     const result = await craftApi.postCraft(articleData);
     return NextResponse.json(result);

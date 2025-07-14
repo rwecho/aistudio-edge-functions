@@ -11,6 +11,8 @@ import markedSlider from "./MDSlider";
 import markedAnnotation from "./MDAnnotation";
 import { ServerMDKatex } from "./ServerMDKatex";
 import markedToc from "./MDToc";
+import { JSDOM } from "jsdom";
+import juice from "juice";
 
 // highlight.js 主题配置
 const codeBlockUrlPrefix = `https://cdn-doocs.oss-cn-shenzhen.aliyuncs.com/npm/highlightjs/11.11.1/styles/`;
@@ -247,6 +249,25 @@ function escapeHtml(text: string): string {
     .replace(/"/g, `&quot;`) // 转义 "
     .replace(/'/g, `&#39;`) // 转义 '
     .replace(/`/g, `&#96;`); // 转义 `
+}
+
+function mergeCss(html: string): string {
+  return juice(html, {
+    inlinePseudoElements: true,
+    preserveImportant: true,
+  });
+}
+
+function modifyHtmlStructure(document: Document, htmlString: string): string {
+  const tempDiv = document.createElement(`div`);
+  tempDiv.innerHTML = htmlString;
+
+  // 移动 `li > ul` 和 `li > ol` 到 `li` 后面
+  tempDiv.querySelectorAll(`li > ul, li > ol`).forEach((originalItem) => {
+    originalItem.parentElement!.insertAdjacentElement(`afterend`, originalItem);
+  });
+
+  return tempDiv.innerHTML;
 }
 
 function transform(
@@ -825,6 +846,60 @@ const initRenderer = (options: MarkdownOptions) => {
     `;
   };
 
+  const sanitizeHtml = (html: string, primaryColor: string): string => {
+    const dom = new JSDOM(html);
+    const document = dom.window.document;
+    const modifiedHtml = modifyHtmlStructure(
+      document,
+      mergeCss(document.documentElement.innerHTML)
+    );
+
+    const replacedHtml = modifiedHtml
+      .replace(/([^-])top:(.*?)em/g, `$1transform: translateY($2em)`)
+      .replace(/hsl\(var\(--foreground\)\)/g, `#3f3f3f`)
+      .replace(/var\(--blockquote-background\)/g, `#f7f7f7`)
+      .replace(/var\(--md-primary-color\)/g, primaryColor)
+      .replace(/--md-primary-color:.+?;/g, ``)
+      .replace(
+        /<span class="nodeLabel"([^>]*)><p[^>]*>(.*?)<\/p><\/span>/g,
+        `<span class="nodeLabel"$1>$2</span>`
+      )
+      .replace(
+        /<span class="edgeLabel"([^>]*)><p[^>]*>(.*?)<\/p><\/span>/g,
+        `<span class="edgeLabel"$1>$2</span>`
+      );
+
+    document.documentElement.innerHTML = replacedHtml;
+
+    const images = document.getElementsByTagName(`img`);
+
+    Array.from(images).forEach((image) => {
+      const width = image.getAttribute(`width`)!;
+      const height = image.getAttribute(`height`)!;
+      image.removeAttribute(`width`);
+      image.removeAttribute(`height`);
+      image.style.width = width;
+      image.style.height = height;
+    });
+
+    const createEmptyNode = (): HTMLElement => {
+      const node = document.createElement(`p`);
+      node.style.fontSize = `0`;
+      node.style.lineHeight = `0`;
+      node.style.margin = `0`;
+      node.innerHTML = `&nbsp;`;
+      return node;
+    };
+    // 添加空白节点用于兼容 SVG 复制
+    const beforeNode = createEmptyNode();
+    const afterNode = createEmptyNode();
+
+    document.body.insertBefore(beforeNode, document.body.firstChild);
+    document.body.appendChild(afterNode);
+
+    return document.body.innerHTML;
+  };
+
   // 创建渲染器
   const renderer: RendererObject = {
     heading({ tokens, depth }: Tokens.Heading) {
@@ -1010,11 +1085,12 @@ const initRenderer = (options: MarkdownOptions) => {
     const footnotesHtml = buildFootnotes();
     const additionHtml = buildAddition();
     const html = readingTimeHtml + markdownHtml + footnotesHtml + additionHtml;
-    return (
-      `<p>&nbsp;</p>` +
-      styledContent(`container`, html, `section`) +
-      `<p>&nbsp;</p>`
+
+    const sanitizedHtml = sanitizeHtml(
+      styledContent(`container`, html, `section`),
+      options.primaryColor ?? `#0969da`
     );
+    return sanitizedHtml;
   };
 
   return {
