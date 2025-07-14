@@ -12,7 +12,7 @@ export default function Home() {
     {
       title: "Markdown 转 HTML",
       description: "支持 GitHub 风格的 Markdown，代码高亮",
-      href: "/markdown-demo",
+      href: "/markdown",
       icon: "📝",
     },
     {
