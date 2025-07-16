@@ -118,10 +118,22 @@ async function processUrl(
     markdown = markdown.replace(match[1], relativePath);
   }
 
-  fs.writeFileSync(articlePath, markdown, "utf-8");
+  // Add metadata to markdown
+  const articleMetadata = `---
+title: ${article.title || "Untitled"}
+url: ${url}
+author: ${article.byline || "Unknown"}
+published: ${article.publishedTime || new Date().toISOString()}
+processed: ${new Date().toISOString()}
+---
+
+`;
+  const fullMarkdown = articleMetadata + markdown;
+
+  fs.writeFileSync(articlePath, fullMarkdown, "utf-8");
   console.log(`Saved markdown to ${articlePath}`);
 
-  return { id: urlHash, article: postProcessImages(urlHash, markdown) };
+  return { id: urlHash, article: postProcessImages(urlHash, fullMarkdown) };
 }
 
 export async function GET(req: NextRequest) {
