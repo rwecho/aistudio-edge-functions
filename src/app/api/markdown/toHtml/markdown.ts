@@ -960,13 +960,13 @@ const initRenderer = (options: MarkdownOptions) => {
     },
 
     listitem(token: Tokens.ListItem) {
-      const ordered = listOrderedStack[listOrderedStack.length - 1];
+      // const ordered = listOrderedStack[listOrderedStack.length - 1];
       const idx = listCounters[listCounters.length - 1]!;
 
       // 准备下一个
       listCounters[listCounters.length - 1] = idx + 1;
 
-      const prefix = ordered ? `${idx}. ` : ``;
+      // const prefix = ordered ? `${idx}. ` : ``;
 
       // 渲染内容：优先 inline，fallback 去掉 <p> 包裹
       let content: string;
@@ -978,7 +978,8 @@ const initRenderer = (options: MarkdownOptions) => {
           .replace(/^<p(?:\s[^>]*)?>([\s\S]*?)<\/p>/, `$1`);
       }
 
-      return styledContent(`listitem`, `${prefix}${content}`, `li`);
+      return styledContent(`listitem`, `${content}`, `li`);
+      // return styledContent(`listitem`, `${prefix}${content}`, `li`);
     },
 
     image({ href, title, text }: Tokens.Image): string {
