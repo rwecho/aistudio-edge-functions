@@ -156,10 +156,8 @@ processed: ${new Date().toISOString()}
     console.log(`Saved markdown to ${articlePath}`);
 
     return {
-      articlePath: `/articles/${urlHash}`,
-      title: article.title,
-      author: article.byline,
-      publishedTime: article.publishedTime,
+      id: urlHash,
+      article: postProcessImages(urlHash, fullMarkdown),
     };
   } finally {
     await browser.close();
