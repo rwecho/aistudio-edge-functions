@@ -25,6 +25,7 @@ const CraftApi = () => {
     type: string;
     media_id: string;
     created_at: number;
+    url?: string;
   }> => {
     const accessToken = await getAccessToken();
 
@@ -35,10 +36,13 @@ const CraftApi = () => {
     formData.append("media", blob, "image.jpg");
 
     const uploadUrl = isMaterial ? UPLOAD_material_URL : UPLOAD_IMG_URL;
-    const response = await fetch(`${uploadUrl}?access_token=${accessToken}`, {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      `${uploadUrl}?access_token=${accessToken}&type=image`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     const data = await response.json();
     if (data.errcode) {
@@ -57,11 +61,38 @@ const CraftApi = () => {
     const { media_id: thumb_media_id } = await uploadMaterial(thumb_url, true);
     const accessToken = await getAccessToken();
 
+    // 处理正文图片：上传到微信并替换内容中的图片地址
+    let updatedContent = craft.content;
+    const imgTagRegex = /<img [^>]*src="([^"]+)"[^>]*>/g;
+    const matches = [...craft.content.matchAll(imgTagRegex)];
+    for (const match of matches) {
+      const fullTag = match[0];
+      const src = match[1];
+      if (!src) continue;
+      try {
+        const imgproxyUrl = process.env.IMGPROXY_URL;
+        const proxiedSrc = imgproxyUrl
+          ? `${imgproxyUrl}/insecure/resize:fit:800:0/quality:85/plain/${encodeURIComponent(
+              src
+            )}@jpeg`
+          : src;
+        const newUrl = (await uploadMaterial(proxiedSrc)).url;
+
+        if (newUrl) {
+          const newTag = fullTag.replace(src, newUrl);
+          // 只替换当前匹配到的这一个标签，防止同一URL多次被错误替换
+          updatedContent = updatedContent.replace(fullTag, newTag);
+        }
+      } catch (e) {
+        console.error(`图片上传或获取失败: ${src}`, e);
+      }
+    }
+
     const articles = {
       title: craft.title,
       author: craft.author,
       digest: craft.digest,
-      content: craft.content,
+      content: updatedContent,
       content_source_url: craft.content_source_url,
       need_open_comment: 1,
       thumb_media_id,

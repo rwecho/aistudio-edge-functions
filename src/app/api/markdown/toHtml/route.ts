@@ -5,20 +5,9 @@ import { renderToHtmlWithTheme } from "./markdown";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-
     const { markdown, options } = body;
-    const replacedImagesMarkdown = markdown.replace(
-      /!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g,
-      (_: string, altText: string, imageUrl: string) => {
-        const proxiedUrl = `${
-          process.env.NEXT_PUBLIC_API_URL
-        }/api/proxy/${encodeURIComponent(imageUrl)}`;
-        return `![${altText}](${proxiedUrl})`;
-      }
-    );
-
     // 如果提供了选项，使用带主题的渲染函数
-    const html = await renderToHtmlWithTheme(replacedImagesMarkdown, options);
+    const html = await renderToHtmlWithTheme(markdown, options);
 
     return NextResponse.json({
       success: true,
