@@ -37,7 +37,7 @@ export default function OSSBrowser() {
         params.append("prefix", searchPrefix);
       }
 
-      const response = await fetch(`/api/oss/list?${params.toString()}`);
+      const response = await fetch(`/api/oss/sws?${params.toString()}`);
       const data: OSSListResponse = await response.json();
 
       if (data.success && data.data) {
